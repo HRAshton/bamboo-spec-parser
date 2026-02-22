@@ -7,7 +7,11 @@
   },
   "files": {
     "ignoreUnknown": false,
-    "includes": ["**", "!.release-please-manifest.json", "!jsr.json"]
+    "includes": [
+      "**",
+      "!.release-please-manifest.json",
+      "!jsr.json"
+    ]
   },
   "formatter": {
     "enabled": true,
