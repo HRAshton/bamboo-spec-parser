@@ -1,3 +1,6 @@
+# Uncategorized exclusions
+.idea
+
 # Logs
 logs
 *.log
