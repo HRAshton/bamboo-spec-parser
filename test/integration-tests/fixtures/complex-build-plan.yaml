@@ -1,0 +1,392 @@
+﻿---
+version: 2
+server-name: team_.*
+plan:
+  project-key: PROJ
+  key: PLAN
+  name: My Plan
+  enabled: true
+  rerunnable: true
+
+stages:
+  - Default Stage:
+      description: Default stage for running unit and integration tests
+      manual: true
+      final: true
+      jobs:
+        - Default Job
+        - Artifact Schema Tests
+        - Ant Schema Tests
+        - Bower Schema Tests
+  - asd:
+      manual: false
+      final: false
+      jobs: []
+Default Job:
+  key: JOB1
+  other:
+    clean-working-dir: true
+    all-other-apps:
+      custom:
+        com.atlassian.bamboo.build.test.skip.history.enabled: 'true'
+        auto:
+          regex: '^\\d{3}$'
+          label: 'build-123'
+        buildHangingConfig:
+          minutesBetweenLogs: '13'
+          minutesQueueTimeout: '123'
+          multiplier: '12'
+          enabled: 'true'
+        ncover:
+          path: '/opt/tools/ncover'
+          exists: 'true'
+        clover:
+          path: '/opt/tools/clover'
+          exists: 'true'
+  tasks:
+    - any-task:
+        plugin-key: com.atlassian.bamboo.plugins.bamboo-docker-plugin:task.docker.cli
+        configuration:
+          commandOption: build
+          repository: example-org/my-service
+          dockerfileOption: inline
+          dockerfile: |-
+            FROM node:18-alpine
+            WORKDIR /app
+            COPY package*.json ./
+            RUN npm ci --only=production
+            COPY . .
+            CMD ["node","server.js"]
+          nocache: 'false'
+          save: 'true'
+          filename: Dockerfile
+          buildOptions: '--pull --no-cache'
+          environmentVariables: NODE_ENV=production,API_URL=https://api.example.com
+          workingSubDirectory: services/backend
+        conditions:
+          - variable:
+              exists: CI_BUILD
+    - any-task:
+        plugin-key: com.atlassian.bamboo.plugins.bamboo-docker-plugin:task.docker.cli
+        configuration:
+          commandOption: build
+          repository: example-org/frontend
+          dockerfileOption: existing
+          nocache: 'true'
+          save: 'true'
+          filename: Dockerfile.prod
+          buildOptions: '--target production'
+          environmentVariables: NODE_ENV=production
+          workingSubDirectory: services/frontend
+    - any-task:
+        plugin-key: com.atlassian.bamboo.plugins.bamboo-docker-plugin:task.docker.cli
+        configuration:
+          commandOption: run
+          image: example-org/my-service:latest
+          detach: 'true'
+          name: my-service-container
+          containerPort_0: '8080'
+          containerPort_1: '9090'
+          hostPort_1: '9090'
+          hostPort_0: '8080'
+          serviceWait: 'true'
+          serviceUrlPattern: http://localhost:${docker.port}/health
+          serviceTimeout: '120'
+          link: 'false'
+          envVars: APP_ENV=staging,LOG_LEVEL=info
+          command: npm start
+          workDir: /usr/src/app
+          additionalArgs: --log-level=debug
+          containerDataVolume_4: /var/lib/service/data
+          containerDataVolume_5: /var/lib/service/cache
+          containerDataVolume_2: /var/lib/service/uploads
+          containerDataVolume_3: /var/lib/service/tmp
+          containerDataVolume_8: /var/log/service
+          containerDataVolume_9: /opt/service/config
+          containerDataVolume_6: /mnt/extra1
+          containerDataVolume_7: /mnt/extra2
+          containerDataVolume_0: /data
+          hostDirectory_12: /host/data/12
+          containerDataVolume_1: /data/volume1
+          hostDirectory_11: /host/data/11
+          hostDirectory_10: /host/data/10
+          hostDirectory_0: /host/data
+          hostDirectory_1: /host/logs
+          hostDirectory_6: /host/mnt/6
+          hostDirectory_7: /host/mnt/7
+          hostDirectory_8: /host/mnt/8
+          hostDirectory_9: /host/mnt/9
+          hostDirectory_2: /host/uploads
+          containerDataVolume_11: /data/volume11
+          hostDirectory_3: /host/config
+          containerDataVolume_12: /data/volume12
+          hostDirectory_4: /host/deploy
+          hostDirectory_5: /host/cache
+          containerDataVolume_10: /data/volume10
+          environmentVariables: APP_ENV=staging,DATABASE_URL=postgres://db:5432/app
+    - any-task:
+        plugin-key: com.atlassian.bamboo.plugins.bamboo-docker-plugin:task.docker.cli
+        configuration:
+          commandOption: push
+          pushRepository: registry.example.com/example-org/my-service:1.2.3
+          registryOption: hub
+          environmentVariables: DOCKER_USERNAME=ci-bot
+          workingSubDirectory: services/backend
+    - any-task:
+        plugin-key: com.atlassian.bamboo.plugins.bamboo-docker-plugin:task.docker.cli
+        configuration:
+          commandOption: push
+          pushRepository: registry.example.com:5000/example-org/frontend:stable
+          registryOption: custom
+    - any-task:
+        plugin-key: com.atlassian.bamboo.plugins.bamboo-docker-plugin:task.docker.cli
+        configuration:
+          commandOption: push
+          username: ci-deployer
+          password: '<encrypted:docker-password>'
+          pushRepository: registry.example.com/example-org/private-repo:release
+          registryOption: hub
+    - any-task:
+        plugin-key: com.atlassian.bamboo.plugins.bamboo-docker-plugin:task.docker.cli
+        configuration:
+          commandOption: push
+          pushSharedCredentialsId: '1146881'
+          pushRepository: registry.example.com/example-org/shared:latest
+          registryOption: hub
+    - any-task:
+        plugin-key: com.atlassian.bamboo.plugins.bamboo-docker-plugin:task.docker.cli
+        configuration:
+          commandOption: pull
+          pullRepository: registry.example.com/example-org/base-image:latest
+          pullRegistryOption: hub
+          environmentVariables: PULL_POLICY=always
+          workingSubDirectory: build/tools
+    - artifact-download:
+        artifacts:
+          - name: build-output
+        custom-branch: main
+        description: Download build artifacts from the default plan
+    - checkout:
+        force-clean-build: false
+    - checkout:
+        repository: temp
+        path: /build
+        force-clean-build: false
+    - checkout:
+        repository: temp
+        path: /deploy
+        force-clean-build: true
+    - vcs-branch:
+        repository: origin
+        branch: branch_${bamboo.buildResultKey}
+        description: Create release branch for the current build
+    - vcs-push:
+        repository: origin
+    - vcs-commit:
+        repository: origin
+        message: Update version and changelog
+    - any-task:
+        plugin-key: com.atlassian.bamboo.plugins.ant:task.builder.ant
+        configuration:
+          testResultsDirectory: '**/test-reports/*.xml'
+          buildJdk: JDK 21
+          label: Ant Build
+          testChecked: 'true'
+          target: clean test
+        description: Ant minimal
+    - vcs-tag:
+        tag: ${bamboo.buildResultKey}
+  artifacts:
+    - name: build-output
+      pattern: dist/**
+      shared: true
+      required: true
+  requirements:
+    - system.jdk.JDK 21.0.10: .*
+    - system.os: linux
+    - system.jdk.JDK: .*openjdk.*
+    - system.builder.mvn3.Maven 3: 3.8.*
+  artifact-subscriptions: []
+Artifact Schema Tests:
+  key: ARTIF
+  tasks:
+    - checkout:
+        force-clean-build: false
+        description: Checkout Default Repository
+  artifact-subscriptions: []
+Ant Schema Tests:
+  key: ANTSC
+  tasks:
+    - checkout:
+        force-clean-build: false
+        description: Checkout Default Repository
+    - any-task:
+        plugin-key: com.atlassian.bamboo.plugins.ant:task.builder.ant
+        configuration:
+          testResultsDirectory: '**/test-reports/*.xml'
+          buildJdk: JDK 21
+          label: Ant Build
+          testChecked: 'true'
+          target: clean test
+        description: Ant - Minimal
+    - any-task:
+        plugin-key: com.atlassian.bamboo.plugins.ant:task.builder.ant
+        configuration:
+          buildFile: build/custom-build.xml
+          testResultsDirectory: '**/test-reports/*.xml'
+          buildJdk: JDK 21
+          label: Ant Build
+          testChecked: 'false'
+          target: clean build
+        description: Ant - With buildFile
+    - any-task:
+        plugin-key: com.atlassian.bamboo.plugins.ant:task.builder.ant
+        configuration:
+          testResultsDirectory: '**/test-reports/*.xml'
+          buildJdk: JDK 21
+          label: Ant Build
+          testChecked: 'true'
+          target: clean test
+        description: Ant - With env and working dir
+    - any-task:
+        plugin-key: com.atlassian.bamboo.plugins.ant:task.builder.ant
+        configuration:
+          testResultsDirectory: '**/test-reports/*.xml'
+          buildJdk: JDK 21
+          label: Ant Build
+          testChecked: 'true'
+          target: test
+        description: Ant - With tests
+    - any-task:
+        plugin-key: com.atlassian.bamboo.plugins.ant:task.builder.ant
+        configuration:
+          testResultsDirectory: '**/test-reports/*.xml'
+          buildJdk: JDK 21
+          label: Ant Build
+          testChecked: 'true'
+          target: test
+        description: Ant - With tests
+    - any-task:
+        plugin-key: com.atlassian.bamboo.plugins.ant:task.builder.ant
+        configuration:
+          buildFile: build.xml
+          environmentVariables: JAVA_OPTS="-Xmx512m"
+          testResultsDirectory: '**/test-reports/*.xml'
+          buildJdk: JDK 21
+          label: Ant Build
+          testChecked: 'true'
+          target: deploy
+          workingSubDirectory: deploy
+        description: Ant - Full
+  artifact-subscriptions: []
+Bower Schema Tests:
+  key: BOWER
+  tasks:
+    - checkout:
+        force-clean-build: false
+        description: Checkout Default Repository
+  artifact-subscriptions: []
+repositories:
+  - temp:
+      scope: global
+  - asd:
+      type: git
+      url: https://github.com/example-org/my-app.git
+      branch: main
+      command-timeout-minutes: '180'
+      lfs: false
+      verbose-logs: false
+      use-shallow-clones: false
+      cache-on-agents: true
+      submodules: false
+      submodules-use-shallow-clones: false
+      ssh-key-applies-to-submodules: true
+      fetch-all: false
+      change-detection:
+        exclude-changeset-pattern: docs/**
+        file-filter-type: include_only
+        file-filter-pattern: src/**
+      viewer:
+        com.atlassian.bamboo.plugins.atlassian-bamboo-plugin-git:githubViewer: {}
+  - fdd:
+      plugin-key: com.atlassian.bamboo.plugin.system.repository:svnv2
+      server-config:
+        repository.svn.authType: ssl-client-certificate
+        repository.svn.branch.create.autodetectPath: 'true'
+        repository.svn.repositoryRoot: https://svn.example.com/repos/project
+        repository.svn.sslKeyFile: id_rsa
+        repository.svn.sslPassphrase: '<encrypted:svn-passphrase>'
+        repository.svn.tag.create.autodetectPath: 'true'
+        repository.svn.useExport: 'true'
+        repository.svn.useExternals: 'true'
+        repository.svn.username: svnuser
+        repository.svn.userPassword: '<encrypted:svn-password>'
+      branch-config:
+        repository.svn.branch.displayName: release/1.0
+        repository.svn.branch.path: branches/release/1.0
+      branch-detection-config:
+        repository.svn.branch.detection.path: '{overridden=true}'
+      change-detection:
+        commit-isolation: true
+        exclude-changeset-pattern: docs/**
+      viewer:
+        fisheye:
+          url: http://svn.atlassian.com/fisheye
+          repository-name: example-svn-repo
+          path: trunk
+triggers:
+  - polling:
+      period: '180'
+      repositories:
+        - fdd
+        - temp
+      conditions:
+        - green-plan:
+            - AA-AA
+branches:
+  create: manually
+  delete: never
+  link-to-jira: true
+notifications: []
+labels: []
+dependencies:
+  require-all-stages-passing: false
+  enabled-for-branches: true
+  block-strategy: none
+  plans: []
+other:
+  concurrent-build-plugin:
+    number-of-concurrent-builds: system-default
+    execution-strategy: stop-oldest-builds
+  force-stop-build: true
+  all-other-apps:
+    custom:
+      artifactHandlers:
+        comAtlassianBambooPluginArtifactHandlerRemote:S3ArtifactHandler:enabledForShared: 'true'
+        useCustomArtifactHandlers: 'true'
+        comAtlassianBambooPluginsBamboo-scp-plugin:SftpArtifactHandler:enabledForNonShared: 'true'
+        comAtlassianBambooPluginArtifactHandlerRemote:AgentLocalArtifactHandler:enabledForShared: 'true'
+        comAtlassianBambooPluginArtifactHandlerRemote:BambooRemoteArtifactHandler:enabledForNonShared: 'true'
+      buildExpiryConfig:
+        duration: '345'
+        period: days
+        labelsToKeep: '345'
+        maximumBuildsToKeep: '34'
+        buildsToKeep: '1'
+        enabled: 'true'
+        expiryTypeArtifact: 'true'
+---
+version: 2
+plan:
+  key: AA-AA
+plan-permissions:
+  - users:
+      - bamboo
+    permissions:
+      - view
+      - edit
+      - build
+      - clone
+      - admin
+      - view-configuration
+      - create-plan-branch

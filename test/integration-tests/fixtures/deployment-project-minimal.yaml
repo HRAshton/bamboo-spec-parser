@@ -1,0 +1,33 @@
+﻿---
+version: 2
+deployment:
+  name: asd
+  source-plan: AA-AA
+  description: asd
+release-naming:
+  next-version-name: release-1
+  applies-to-branches: false
+  auto-increment: true
+  auto-increment-variables: []
+environments: []
+---
+version: 2
+deployment:
+  name: asd
+deployment-permissions:
+  - users:
+      - bamboo
+    permissions:
+      - view
+      - edit
+      - clone
+      - admin
+      - view-configuration
+      - approve-release
+      - create-release
+  - roles:
+      - logged-in
+      - anonymous
+    permissions:
+      - view
+...

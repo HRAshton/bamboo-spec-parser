@@ -1,10 +1,17 @@
 // Node/Bun adapter. Exposes core utilities and Node-specific helpers.
-export { add, getRandomId, greet } from "./internal";
+import fs from 'node:fs';
+import { readYaml } from './read-yaml.ts';
+import {
+  type BambooSpec,
+  BambooSpecSchema,
+} from './validation-schemas/bamboo-spec.ts';
 
-import { randomBytes } from "node:crypto";
+const getContent = (requiredPath: string): string => {
+  return fs.readFileSync(requiredPath, 'utf-8');
+};
 
-export function getSecureRandomId(): string {
-  const timePart = Date.now().toString(36);
-  const bytes = randomBytes(12).toString("base64url");
-  return `${timePart}-${bytes}`;
+export function parseAndValidateBambooSpecFile(yamlPath: string): BambooSpec[] {
+  const specString = getContent(yamlPath);
+  const readingResult = readYaml(specString, getContent);
+  return readingResult.map((doc) => BambooSpecSchema.parse(doc.toJS()));
 }
