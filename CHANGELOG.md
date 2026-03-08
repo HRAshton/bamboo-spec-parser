@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0-alpha.3](https://github.com/HRAshton/bamboo-spec-parser/compare/bamboo-spec-parser-v1.0.0-alpha.3...bamboo-spec-parser-v1.1.0-alpha.3) (2026-03-08)
+
+
+### Features
+
+* Remove bom from jsr.json ([ce416dd](https://github.com/HRAshton/bamboo-spec-parser/commit/ce416ddf723011ef8ff23eb7d0ab062be9c40336))
+
 ## [1.0.0-alpha.3](https://github.com/HRAshton/bamboo-spec-parser/compare/bamboo-spec-parser-v1.0.0-alpha.3...bamboo-spec-parser-v1.0.0-alpha.3) (2026-03-08)
 
 
