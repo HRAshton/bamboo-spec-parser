@@ -53,7 +53,7 @@ export const readYaml = (
   }
 
   const errorsStr = errors
-    .map((e) => `- ${e.message} (${e.details})`)
+    .map((e) => `- ${e.message} (${JSON.stringify(e.details)})`)
     .join('\n');
 
   throw new Error(

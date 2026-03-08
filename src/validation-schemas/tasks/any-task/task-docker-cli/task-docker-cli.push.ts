@@ -9,7 +9,7 @@ export const PushCommandOption = 'push' as const;
 const configurationShape = {
   commandOption: z.literal(PushCommandOption),
   pushRepository: z.string(),
-  pushRegistryOption: z.enum(['hub', 'custom']),
+  registryOption: z.enum(['hub', 'custom']),
   ...AuthProperties,
   ...DockerCommonValidationProperties,
 };

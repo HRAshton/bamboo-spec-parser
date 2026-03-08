@@ -57,7 +57,7 @@ Validation is implemented with [Zod](https://zod.dev/) schemas defined under `sr
 ⚠ IN PROGRESS
 
 The normalized spec is a more user-friendly format that is easier to work with in JavaScript. It is designed to be as
-close to the original YAML file as possible while elliminating some of unnecessary complexity of the original schema.
+close to the original YAML file as possible while eliminating some of unnecessary complexity of the original schema.
 
 Base rules for the normalized spec:
 

@@ -12,12 +12,12 @@ describe('Push command', () => {
       # hub registry - required fields only
       - commandOption: push
         pushRepository: myorg/myapp:latest
-        pushRegistryOption: hub
+        registryOption: hub
 
       # hub registry - all optional auth fields
       - commandOption: push
         pushRepository: myorg/myapp:v1.0.0
-        pushRegistryOption: hub
+        registryOption: hub
         username: dockeruser
         password: dockerpass
         pushSharedCredentialsId: hub-creds
@@ -25,32 +25,32 @@ describe('Push command', () => {
       # hub registry - only pushSharedCredentialsId
       - commandOption: push
         pushRepository: ubuntu/ubuntu:latest
-        pushRegistryOption: hub
+        registryOption: hub
         pushSharedCredentialsId: hub-creds
 
       # hub registry - only username/password
       - commandOption: push
         pushRepository: postgres/postgres:13
-        pushRegistryOption: hub
+        registryOption: hub
         username: user
         password: pass
 
       # hub registry - environmentVariables
       - commandOption: push
         pushRepository: redis/redis:latest
-        pushRegistryOption: hub
+        registryOption: hub
         environmentVariables: PUSH_TIMEOUT=120 COMPRESSION=gzip
 
       # hub registry - workingSubDirectory
       - commandOption: push
         pushRepository: alpine/alpine:latest
-        pushRegistryOption: hub
+        registryOption: hub
         workingSubDirectory: docker/images
 
       # hub registry - all optional fields
       - commandOption: push
         pushRepository: myorg/myapp:v1.2.3
-        pushRegistryOption: hub
+        registryOption: hub
         pushSharedCredentialsId: docker-hub-creds
         environmentVariables: REGISTRY_MIRROR=https://mirror.example.com TIMEOUT=300
         workingSubDirectory: services/docker
@@ -58,23 +58,23 @@ describe('Push command', () => {
       # custom registry - required fields only
       - commandOption: push
         pushRepository: registry.example.com/myapp:latest
-        pushRegistryOption: custom
+        registryOption: custom
 
       # custom registry - with auth credentials
       - commandOption: push
         pushRepository: private.registry.io/team/app:main
-        pushRegistryOption: custom
+        registryOption: custom
         username: registryuser
         password: registrypass
 
       # custom registry - with shared credentials
       - commandOption: push
         pushRepository: registry.company.com/app:latest
-        pushRegistryOption: custom
+        registryOption: custom
         pushSharedCredentialsId: company-registry-creds
 
       # field ordering - properties in any order
-      - pushRegistryOption: hub
+      - registryOption: hub
         pushRepository: myorg/app:latest
         commandOption: push
         workingSubDirectory: services
@@ -82,35 +82,35 @@ describe('Push command', () => {
       # special characters - repository with port
       - commandOption: push
         pushRepository: registry.example.com:5000/myapp:latest
-        pushRegistryOption: custom
+        registryOption: custom
 
       # special characters - complex repository reference
       - commandOption: push
         pushRepository: registry.io/namespace/org/app:v1.2.3-beta.1+build.123
-        pushRegistryOption: custom
+        registryOption: custom
 
       # special characters - password with special characters
       - commandOption: push
         pushRepository: myapp:latest
-        pushRegistryOption: hub
+        registryOption: hub
         password: 'p@ss:word!#$%&*()'
 
       # special characters - username with dots and dashes
       - commandOption: push
         pushRepository: myapp:latest
-        pushRegistryOption: hub
+        registryOption: hub
         username: user.name-123
 
       # special characters - empty environmentVariables
       - commandOption: push
         pushRepository: myorg/app:latest
-        pushRegistryOption: hub
+        registryOption: hub
         environmentVariables: ''
 
       # auth combinations - both username/password and pushSharedCredentialsId
       - commandOption: push
         pushRepository: myapp:latest
-        pushRegistryOption: hub
+        registryOption: hub
         username: user
         password: pass
         pushSharedCredentialsId: creds-id
@@ -118,30 +118,30 @@ describe('Push command', () => {
       # auth combinations - only username
       - commandOption: push
         pushRepository: myapp:latest
-        pushRegistryOption: hub
+        registryOption: hub
         username: user
 
       # auth combinations - only password
       - commandOption: push
         pushRepository: myapp:latest
-        pushRegistryOption: hub
+        registryOption: hub
         password: pass
 
       # auth combinations - pullSharedCredentialsId (cross-field)
       - commandOption: push
         pushRepository: myapp:latest
-        pushRegistryOption: hub
+        registryOption: hub
         pullSharedCredentialsId: pull-creds
 
       # optional fields - undefined optional fields
       - commandOption: push
         pushRepository: myorg/app:latest
-        pushRegistryOption: hub
+        registryOption: hub
 
       # optional fields - partial optional fields
       - commandOption: push
         pushRepository: myorg/app:latest
-        pushRegistryOption: hub
+        registryOption: hub
         username: user
         workingSubDirectory: docker
     `).toJS();
@@ -156,74 +156,74 @@ describe('Push command', () => {
     const testCases: unknown[] = parseDocument(`
       # missing commandOption
       - pushRepository: myorg/app:latest
-        pushRegistryOption: hub
+        registryOption: hub
 
       # missing pushRepository
       - commandOption: push
-        pushRegistryOption: hub
+        registryOption: hub
 
-      # missing pushRegistryOption
+      # missing registryOption
       - commandOption: push
         pushRepository: myorg/app:latest
 
       # invalid commandOption - pull
       - commandOption: pull
         pushRepository: myorg/app:latest
-        pushRegistryOption: hub
+        registryOption: hub
 
       # invalid commandOption - build
       - commandOption: build
         pushRepository: myorg/app:latest
-        pushRegistryOption: hub
+        registryOption: hub
 
-      # invalid pushRegistryOption - docker-hub
+      # invalid registryOption - docker-hub
       - commandOption: push
         pushRepository: myorg/app:latest
-        pushRegistryOption: docker-hub
+        registryOption: docker-hub
 
-      # invalid pushRegistryOption - private
+      # invalid registryOption - private
       - commandOption: push
         pushRepository: myorg/app:latest
-        pushRegistryOption: private
+        registryOption: private
 
       # type mismatch - pushRepository is number
       - commandOption: push
         pushRepository: 123
-        pushRegistryOption: hub
+        registryOption: hub
 
       # type mismatch - commandOption is number
       - commandOption: 123
         pushRepository: myorg/app:latest
-        pushRegistryOption: hub
+        registryOption: hub
 
       # type mismatch - username is number
       - commandOption: push
         pushRepository: myorg/app:latest
-        pushRegistryOption: hub
+        registryOption: hub
         username: 123
 
       # type mismatch - password is number
       - commandOption: push
         pushRepository: myorg/app:latest
-        pushRegistryOption: hub
+        registryOption: hub
         password: 12345
 
       # type mismatch - environmentVariables is number
       - commandOption: push
         pushRepository: myorg/app:latest
-        pushRegistryOption: hub
+        registryOption: hub
         environmentVariables: 123
 
       # type mismatch - workingSubDirectory is number
       - commandOption: push
         pushRepository: myorg/app:latest
-        pushRegistryOption: hub
+        registryOption: hub
         workingSubDirectory: 123
 
       # type mismatch - pushSharedCredentialsId is number
       - commandOption: push
         pushRepository: myorg/app:latest
-        pushRegistryOption: hub
+        registryOption: hub
         pushSharedCredentialsId: 123
     `).toJS();
 
