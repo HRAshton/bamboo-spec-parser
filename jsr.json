@@ -1,5 +1,5 @@
-{
-  "name": "bamboo-spec-parser",
+﻿{
+  "name": "@hrashton/bamboo-spec-parser",
   "version": "0.0.0",
   "license": "MIT",
   "exports": "./src/index.ts",
