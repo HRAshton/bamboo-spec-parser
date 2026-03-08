@@ -2,7 +2,7 @@ name: release-please
 
 on:
   push:
-    branches: [main] # updates/opens the release PR when commits land on main
+    branches: [main, develop]
   workflow_dispatch:
 
 permissions:
@@ -11,7 +11,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: release-please
+  group: release-please-${{ github.ref_name }}
   cancel-in-progress: true
 
 jobs:
@@ -24,6 +24,7 @@ jobs:
         uses: googleapis/release-please-action@v4
         with:
           config-file: release-please-config.json
+          target-branch: ${{ github.ref_name }}
 
   publish:
     needs: release-please
@@ -60,6 +61,3 @@ jobs:
           else
             npm publish --access public --provenance
           fi
-
-      - name: publish to JSR
-        run: pnpm dlx jsr publish

@@ -1,4 +1,4 @@
-﻿import { z } from 'zod';
+import { z } from 'zod';
 
 // Common regex pattern for environment variable format validation
 const ENV_VAR_FORMAT_REGEX = /^(\s*(?:"[^"]+"|[^\s=]+)=(?:"[^"]*"|\S*)\s*)*$/;

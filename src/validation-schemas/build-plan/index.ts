@@ -1,4 +1,4 @@
-﻿export { type Artifact, ArtifactValidationSchema } from './artifacts.ts';
+export { type Artifact, ArtifactValidationSchema } from './artifacts.ts';
 export { type Branches, BranchesValidationSchema } from './branches.ts';
 export {
   type Dependencies,

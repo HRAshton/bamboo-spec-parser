@@ -1,4 +1,4 @@
-﻿import { z } from 'zod';
+import { z } from 'zod';
 
 export const RecipientValidationSchema = z.object({
   users: z.array(z.string()).optional(),

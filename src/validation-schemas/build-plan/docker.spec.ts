@@ -1,4 +1,4 @@
-﻿import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { parseDocument } from 'yaml';
 import { createSchemaAsserter } from '../../helpers/test-helpers.ts';
 import { DockerValidationSchema } from './docker.ts';

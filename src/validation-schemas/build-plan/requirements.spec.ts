@@ -1,4 +1,4 @@
-﻿import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { parseDocument } from 'yaml';
 import { RequirementValidationSchema } from './requirements.ts';
 

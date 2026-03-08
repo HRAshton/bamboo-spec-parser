@@ -1,4 +1,4 @@
-﻿import { describe, it } from 'vitest';
+import { describe, it } from 'vitest';
 import { parseDocument } from 'yaml';
 import { createSchemaAsserter } from '../../helpers/test-helpers.ts';
 import { NotificationValidationSchema } from './notifications.ts';
