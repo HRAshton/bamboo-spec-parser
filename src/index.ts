@@ -10,8 +10,14 @@ const getContent = (requiredPath: string): string => {
   return fs.readFileSync(requiredPath, 'utf-8');
 };
 
-export function parseAndValidateBambooSpecFile(yamlPath: string): BambooSpec[] {
-  const specString = getContent(yamlPath);
+export function parseAndValidateBambooSpecContent(
+  specString: string,
+): BambooSpec[] {
   const readingResult = readYaml(specString, getContent);
   return readingResult.map((doc) => BambooSpecSchema.parse(doc.toJS()));
+}
+
+export function parseAndValidateBambooSpecFile(yamlPath: string): BambooSpec[] {
+  const specString = getContent(yamlPath);
+  return parseAndValidateBambooSpecContent(specString);
 }

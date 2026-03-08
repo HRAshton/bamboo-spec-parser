@@ -2,7 +2,10 @@
 import os from 'node:os';
 import path from 'node:path';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
-import { parseAndValidateBambooSpecFile } from './index.ts';
+import {
+  parseAndValidateBambooSpecFile,
+  parseAndValidateBambooSpecContent,
+} from './index.ts';
 import type { BuildPlanSpec } from './validation-schemas/build-plan-spec.ts';
 import type { DeploymentProjectSpec } from './validation-schemas/deployment-project-spec.ts';
 
@@ -244,5 +247,86 @@ Default:
       expect(result[0]).toHaveProperty('version');
       expect(result[0]).toHaveProperty('plan');
     });
+  });
+});
+
+describe('parseAndValidateBambooSpecContent (Node/String)', () => {
+  it('parses a valid build plan from string', () => {
+    const yaml = `version: 2
+plan:
+  project-key: STR
+  key: PLAN1
+  name: String Plan
+stages:
+  - Build:
+      jobs:
+        - Default
+Default:
+  tasks:
+    - script: echo hello`;
+
+    const result = parseAndValidateBambooSpecContent(yaml);
+    expect(result).toHaveLength(1);
+    expect(result[0]).toHaveProperty('plan');
+    expect((result[0] as any).plan['project-key']).toBe('STR');
+  });
+
+  it('parses multiple documents from string', () => {
+    const yaml = `---
+version: 2
+plan:
+  project-key: STR
+  key: PLAN1
+  name: First
+---
+version: 2
+plan:
+  project-key: STR
+  key: PLAN2
+  name: Second`;
+
+    const result = parseAndValidateBambooSpecContent(yaml);
+    expect(result).toHaveLength(2);
+    expect((result[0] as any).plan.key).toBe('PLAN1');
+    expect((result[1] as any).plan.key).toBe('PLAN2');
+  });
+
+  it('throws on invalid YAML syntax', () => {
+    const yaml = `version: 2
+plan
+  key: BAD`;
+    expect(() => parseAndValidateBambooSpecContent(yaml)).toThrow();
+  });
+
+  it('throws when spec is invalid according to schema', () => {
+    const yaml = `version: 2
+plan:
+  project-key: MISSING_KEY`;
+    expect(() => parseAndValidateBambooSpecContent(yaml)).toThrow();
+  });
+
+  it('parses string with UTF-8 characters', () => {
+    const yaml = `version: 2
+plan:
+  project-key: UTF
+  key: PLANU
+  name: Unicode Plan 中文 🚀
+stages:
+  - Build:
+      jobs:
+        - Default
+Default:
+  tasks:
+    - script: echo hello`;
+    const result = parseAndValidateBambooSpecContent(yaml);
+    expect(result).toHaveLength(1);
+    expect((result[0] as any).plan.name).toContain('中文');
+  });
+
+  it('parses string with Windows CRLF line endings', () => {
+    const yaml = 'version: 2\r\nplan:\r\n  project-key: CRLF\r\n  key: PLAN1\r\n  name: CRLF Plan\r\nstages:\r\n  - Build:\r\n      jobs:\r\n        - Default\r\nDefault:\r\n  tasks:\r\n    - script: echo hi';
+    const result = parseAndValidateBambooSpecContent(yaml);
+    expect(result).toHaveLength(1);
+    expect((result[0] as any).plan['project-key']).toBe('CRLF');
   });
 });
