@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.0-alpha.5](https://github.com/HRAshton/bamboo-spec-parser/compare/bamboo-spec-parser-v1.0.0-alpha.4...bamboo-spec-parser-v1.0.0-alpha.5) (2026-03-08)
+
+
+### Miscellaneous Chores
+
+* force alpha release ([df83398](https://github.com/HRAshton/bamboo-spec-parser/commit/df833985acf0d69a998810df1dc6c1c959655339))
+* force alpha release ([354a90b](https://github.com/HRAshton/bamboo-spec-parser/commit/354a90bc08d580b93d245b65b5cd685bf386fa36))
+
 ## [1.0.0-alpha.4](https://github.com/HRAshton/bamboo-spec-parser/compare/bamboo-spec-parser-v1.1.0-alpha.3...bamboo-spec-parser-v1.0.0-alpha.4) (2026-03-08)
 
 
