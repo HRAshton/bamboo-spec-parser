@@ -1,0 +1,56 @@
+{
+  "name": "bamboo-spec-parser",
+  "version": "0.0.0",
+  "description": "A TypeScript library for parsing Bamboo Specs YAML files into structured JavaScript objects.",
+  "keywords": [
+    "bamboo",
+    "specs",
+    "parser",
+    "typescript",
+    "yaml",
+    "atlassian",
+    "ci"
+  ],
+  "homepage": "https://github.com/HRAshton/bamboo-spec-parser",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./browser": {
+      "import": "./dist/browser.js",
+      "types": "./dist/browser.d.ts"
+    }
+  },
+  "types": "./dist/index.d.ts",
+  "browser": "./dist/browser.js",
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch",
+    "lint": "biome check --error-on-warnings",
+    "format": "biome format --write",
+    "test": "vitest run --coverage"
+  },
+  "author": "HRAshton",
+  "repository": "github:HRAshton/bamboo-spec-parser",
+  "bugs": {
+    "url": "https://github.com/HRAshton/bamboo-spec-parser/issues"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.4.4",
+    "@types/node": "^25.3.0",
+    "@vitest/coverage-istanbul": "4.0.18",
+    "tsdown": "^0.20.3",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.18"
+  }
+}
