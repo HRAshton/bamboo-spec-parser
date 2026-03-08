@@ -1,4 +1,4 @@
-﻿import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { readYaml } from './read-yaml.ts';
 
 describe('readYaml', () => {

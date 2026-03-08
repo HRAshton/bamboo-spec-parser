@@ -1,4 +1,4 @@
-﻿import { type Document, parseAllDocuments, type ScalarTag } from 'yaml';
+import { type Document, parseAllDocuments, type ScalarTag } from 'yaml';
 import type { ParsingError } from './parsing-result-models.ts';
 
 function createIncludeTag(

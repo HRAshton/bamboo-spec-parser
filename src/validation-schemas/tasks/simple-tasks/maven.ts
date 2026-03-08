@@ -1,4 +1,4 @@
-﻿import { z } from 'zod';
+import { z } from 'zod';
 import { BaseFullTaskParamsSchema } from '../base/task-base.ts';
 
 export const TaskName = 'maven' as const;

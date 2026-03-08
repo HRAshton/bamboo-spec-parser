@@ -1,4 +1,4 @@
-﻿import { z } from 'zod';
+import { z } from 'zod';
 
 const ConcurrentBuildPluginValidationSchema = z.union([
   z.int().positive(),

@@ -1,4 +1,4 @@
-﻿import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { parseAndValidateBambooSpecContent } from './browser.ts';
 import type { BuildPlanSpec } from './validation-schemas/build-plan-spec.ts';
 

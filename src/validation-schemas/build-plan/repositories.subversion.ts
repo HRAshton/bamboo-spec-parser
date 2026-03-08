@@ -1,4 +1,4 @@
-﻿import { z } from 'zod';
+import { z } from 'zod';
 import { StringOrBooleanValidationSchema } from '../shared/shared-types.ts';
 
 export const SubversionRepositoryServerConfigValidationSchema = z.object({

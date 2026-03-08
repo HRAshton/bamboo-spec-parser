@@ -1,4 +1,4 @@
-﻿import { z } from 'zod';
+import { z } from 'zod';
 
 const StringParamsValidationSchema = z.array(z.string().min(1));
 

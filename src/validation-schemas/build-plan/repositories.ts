@@ -1,4 +1,4 @@
-﻿import { z } from 'zod';
+import { z } from 'zod';
 import { SubversionRepositoryValidationSchema } from './repositories.subversion.ts';
 
 const BaseRegularRepositoryProperties = {
