@@ -1,1 +1,1 @@
-﻿export { type AnyTaskTask, AnyTaskTaskValidationSchema } from './any-task.js';
+﻿export { type AnyTaskTask, AnyTaskTaskValidationSchema } from './any-task.ts';

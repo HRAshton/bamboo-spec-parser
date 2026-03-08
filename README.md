@@ -16,7 +16,7 @@ npm install bamboo-spec-parser
 
 ```typescript
 import fs from 'fs';
-import { parseSpec } from 'bamboo-spec-parser';
+import { parseAndValidateBambooSpecContent } from 'bamboo-spec-parser';
 
 const yamlString = fs.readFileSync('bamboo-spec.yaml', 'utf-8');
 const spec = parseAndValidateBambooSpecContent(yamlString);
@@ -26,12 +26,13 @@ const spec = parseAndValidateBambooSpecContent(yamlString);
 
 This library provides two four functions:
 
-- Parse And Validate: Parses the given YAML string and validates it against the Bamboo Specs schema. It throws an error if the validation fails.
-  - `parseAndValidateBambooSpecContent(yamlString: string): BambooSpec`: for browser and Node.js environments.
-  - `parseAndValidateBambooSpecFile(filePath: string): BambooSpec`: for Node.js environment only.
+- Parse And Validate: Parses the given YAML string and validates it against the Bamboo Specs schema.
+  It throws an error if the validation fails.
+  - `parseAndValidateBambooSpecContent(yamlString: string): BambooSpec[]`: for browser and Node.js environments.
+  - `parseAndValidateBambooSpecFile(filePath: string): BambooSpec[]`: for Node.js environment only.
 - ParseNormalized (⚠ IN PROGRESS): Parses the given YAML string and normalizes it into a more user-friendly format.
-  - `parseNormalizedBambooSpecContent(yamlString: string): NormalizedBambooSpec`: for browser and Node.js environments.
-  - `parseNormalizedBambooSpecFile(filePath: string): NormalizedBambooSpec`: for Node.js environment only.
+  - `parseNormalizedBambooSpecContent(yamlString: string): NormalizedBambooSpec[]`: for browser and Node.js environments.
+  - `parseNormalizedBambooSpecFile(filePath: string): NormalizedBambooSpec[]`: for Node.js environment only.
 
 Also, the library exports TypeScript types and Zod schemas for the original and normalized specs.
 They can be used for type checking and validation in other parts of your application, as well as for building
@@ -72,7 +73,7 @@ Base rules for the normalized spec:
 
 ## Supported Tasks
 
-All tasks are supported at least as generic `any-task` type. The following build-in task types are also supported with
+All tasks are supported at least as generic `any-task` type. The following built-in task types are also supported with
 their own specific types:
 
 Supported task types:
