@@ -2,7 +2,10 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { readYaml } from './read-yaml.ts';
-import { type BambooSpec, BambooSpecSchema } from './validation-schemas/bamboo-spec.ts';
+import {
+  type BambooSpec,
+  BambooSpecSchema,
+} from './validation-schemas/bamboo-spec.ts';
 
 const readFile = (filePath: string): string => {
   return fs.readFileSync(filePath, 'utf-8');

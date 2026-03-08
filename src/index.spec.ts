@@ -324,7 +324,8 @@ Default:
   });
 
   it('parses string with Windows CRLF line endings', () => {
-    const yaml = 'version: 2\r\nplan:\r\n  project-key: CRLF\r\n  key: PLAN1\r\n  name: CRLF Plan\r\nstages:\r\n  - Build:\r\n      jobs:\r\n        - Default\r\nDefault:\r\n  tasks:\r\n    - script: echo hi';
+    const yaml =
+      'version: 2\r\nplan:\r\n  project-key: CRLF\r\n  key: PLAN1\r\n  name: CRLF Plan\r\nstages:\r\n  - Build:\r\n      jobs:\r\n        - Default\r\nDefault:\r\n  tasks:\r\n    - script: echo hi';
     const result = parseAndValidateBambooSpecContent(yaml);
     expect(result).toHaveLength(1);
     expect((result[0] as any).plan['project-key']).toBe('CRLF');
