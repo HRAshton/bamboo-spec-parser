@@ -1,6 +1,6 @@
 ﻿import { z } from 'zod';
 
-export const PoolingTriggerIntParamValidationSchema = z
+export const PollingTriggerIntParamValidationSchema = z
   .number()
   .int()
   .positive();
@@ -24,11 +24,11 @@ export const PollingTriggerObjectParamValidationSchema = z.object({
 });
 
 export const PollingTriggerParamsValidationSchema = z.union([
-  PoolingTriggerIntParamValidationSchema,
+  PollingTriggerIntParamValidationSchema,
   PollingTriggerObjectParamValidationSchema,
 ]);
 
-export const PoolingTriggerValidationSchema = z.record(
+export const PollingTriggerValidationSchema = z.record(
   z.literal('polling'),
   PollingTriggerParamsValidationSchema,
 );
@@ -60,7 +60,7 @@ export const RemoteTriggerValidationSchema = z.union([
 ]);
 
 export const TriggerValidationSchema = z.union([
-  PoolingTriggerValidationSchema,
+  PollingTriggerValidationSchema,
   CronTriggerValidationSchema,
   RemoteTriggerValidationSchema,
 ]);
