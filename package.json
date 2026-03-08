@@ -1,6 +1,6 @@
 {
   "name": "bamboo-spec-parser",
-  "version": "0.0.0",
+  "version": "1.0.0-alpha.3",
   "description": "A TypeScript library for parsing Bamboo Specs YAML files into structured JavaScript objects.",
   "keywords": [
     "bamboo",
