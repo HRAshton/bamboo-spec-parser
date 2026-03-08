@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.1.0 (2026-03-08)
+
+
+### Features
+
+* Implement Spec Validation ([#6](https://github.com/HRAshton/bamboo-spec-parser/issues/6)) ([92f9227](https://github.com/HRAshton/bamboo-spec-parser/commit/92f922702d3b097a11dd631afbf1f9e9e29616ac))
+* Initialize repo from ts-base ([#1](https://github.com/HRAshton/bamboo-spec-parser/issues/1)) ([bcaf8c2](https://github.com/HRAshton/bamboo-spec-parser/commit/bcaf8c2fa08ba43aefea5479495c000dbb4c2ed7))
+
+
+### Bug Fixes
+
+* Update release-please-config.json ([#4](https://github.com/HRAshton/bamboo-spec-parser/issues/4)) ([0bb9fda](https://github.com/HRAshton/bamboo-spec-parser/commit/0bb9fdac596597741f438977d5b34ef5680f1365))
+
+
+### Miscellaneous Chores
+
+* Fix encoding ([#15](https://github.com/HRAshton/bamboo-spec-parser/issues/15)) ([f48904f](https://github.com/HRAshton/bamboo-spec-parser/commit/f48904f664dce45ebbb87d2be15355b902aa36a6))
+
 ## [1.0.0-alpha.8](https://github.com/HRAshton/bamboo-spec-parser/compare/bamboo-spec-parser-v1.0.0-alpha.7...bamboo-spec-parser-v1.0.0-alpha.8) (2026-03-08)
 
 
