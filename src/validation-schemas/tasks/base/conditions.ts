@@ -1,4 +1,4 @@
-﻿import z from 'zod';
+﻿import { z } from 'zod';
 
 export const EqualsConditionValidationSchema = z.object({
   equals: z.record(z.string(), z.string()),
