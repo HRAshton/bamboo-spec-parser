@@ -1,4 +1,4 @@
-﻿import { z } from 'zod';
+import { z } from 'zod';
 import { EnvironmentVariablesValidationSchema } from '../../../../helpers/env-variables-converter.ts';
 import { StringOrBooleanValidationSchema } from '../../../shared/shared-types.ts';
 import {

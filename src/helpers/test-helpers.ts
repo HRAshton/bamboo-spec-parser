@@ -1,4 +1,4 @@
-﻿import { expect } from 'vitest';
+import { expect } from 'vitest';
 import { parseDocument } from 'yaml';
 import type { z } from 'zod';
 

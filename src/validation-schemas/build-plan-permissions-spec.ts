@@ -1,4 +1,4 @@
-﻿import { z } from 'zod';
+import { z } from 'zod';
 import { PermissionsValidationSchema } from './build-plan';
 
 export const BuildPlanPermissionsValidationSchema = z.strictObject({
