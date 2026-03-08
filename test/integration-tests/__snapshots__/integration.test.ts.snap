@@ -1,0 +1,3 @@
+﻿// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Integration Tests > should parse a simple Bamboo spec with included YAML 1`] = `[]`;
