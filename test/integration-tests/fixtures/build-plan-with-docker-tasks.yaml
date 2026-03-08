@@ -1,0 +1,168 @@
+﻿---
+version: 2
+plan:
+  project-key: AA
+  key: AA
+  name: A
+  enabled: true
+  rerunnable: true
+stages:
+  - Default Stage:
+      manual: false
+      final: false
+      jobs:
+        - Default Job
+Default Job:
+  key: JOB1
+  tasks:
+    - any-task:
+        plugin-key: com.atlassian.bamboo.plugins.bamboo-docker-plugin:task.docker.cli
+        configuration:
+          commandOption: build
+          repository: required-field-repo
+          dockerfileOption: inline
+          dockerfile: required-field-dockerfile-content
+          nocache: 'false'
+          save: 'true'
+          filename: asd
+          buildOptions: asdasdad
+          environmentVariables: asdff
+          workingSubDirectory: asd
+        conditions:
+          - variable:
+              exists: sdf
+    - any-task:
+        plugin-key: com.atlassian.bamboo.plugins.bamboo-docker-plugin:task.docker.cli
+        configuration:
+          commandOption: build
+          repository: required
+          dockerfileOption: existing
+          nocache: 'true'
+          save: 'true'
+          filename: asd
+          buildOptions: as
+          environmentVariables: asd
+          workingSubDirectory: asd
+    - any-task:
+        plugin-key: com.atlassian.bamboo.plugins.bamboo-docker-plugin:task.docker.cli
+        configuration:
+          commandOption: run
+          image: required
+          detach: 'true'
+          name: asd
+          containerPort_0: '3'
+          containerPort_1: '2'
+          hostPort_1: '1'
+          hostPort_0: '3'
+          serviceWait: 'false'
+          serviceUrlPattern: http://localhost:${docker.port}
+          serviceTimeout: '120'
+          link: 'true'
+          envVars: Container environment variables
+          command: Container Command
+          workDir: /data
+          additionalArgs: Additional arguments
+          containerDataVolume_4: asdad
+          containerDataVolume_5: r
+          containerDataVolume_2: i
+          containerDataVolume_3: asd
+          containerDataVolume_8: u
+          containerDataVolume_9: s
+          containerDataVolume_6: t
+          containerDataVolume_7: y
+          containerDataVolume_0: p
+          hostDirectory_12: e
+          containerDataVolume_1: o
+          hostDirectory_11: w
+          hostDirectory_10: q
+          hostDirectory_0: p
+          hostDirectory_1: o
+          hostDirectory_6: t
+          hostDirectory_7: y
+          hostDirectory_8: u
+          hostDirectory_9: a
+          hostDirectory_2: i
+          containerDataVolume_11: w
+          hostDirectory_3: asd
+          containerDataVolume_12: e
+          hostDirectory_4: asdad
+          hostDirectory_5: r
+          containerDataVolume_10: q
+          environmentVariables: Environment variables
+    - any-task:
+        plugin-key: com.atlassian.bamboo.plugins.bamboo-docker-plugin:task.docker.cli
+        configuration:
+          commandOption: push
+          pushRepository: required
+          registryOption: hub
+          environmentVariables: asd
+          workingSubDirectory: asd
+    - any-task:
+        plugin-key: com.atlassian.bamboo.plugins.bamboo-docker-plugin:task.docker.cli
+        configuration:
+          commandOption: push
+          pushRepository: registry.requuired:port/namespace/repository:tag
+          registryOption: custom
+    - any-task:
+        plugin-key: com.atlassian.bamboo.plugins.bamboo-docker-plugin:task.docker.cli
+        configuration:
+          commandOption: push
+          username: required
+          password: BAMSCRT@0@0@VxR3KofxGHxnMU+3dKAnAw==
+          pushRepository: qwe
+          registryOption: hub
+    - any-task:
+        plugin-key: com.atlassian.bamboo.plugins.bamboo-docker-plugin:task.docker.cli
+        configuration:
+          commandOption: push
+          pushSharedCredentialsId: '1146881'
+          pushRepository: asd
+          registryOption: hub
+    - any-task:
+        plugin-key: com.atlassian.bamboo.plugins.bamboo-docker-plugin:task.docker.cli
+        configuration:
+          commandOption: pull
+          pullRepository: asd
+          pullRegistryOption: hub
+          environmentVariables: asd
+          workingSubDirectory: asd
+  requirements:
+    - system.builder.mvn3.Maven 3: a
+  artifact-subscriptions: []
+  other:
+    clean-working-dir: true
+    all-other-apps:
+      custom:
+        com.atlassian.bamboo.build.test.skip.history.enabled: 'true'
+        auto:
+          regex: '123'
+          label: '123'
+        buildHangingConfig:
+          minutesBetweenLogs: '13'
+          minutesQueueTimeout: '123'
+          multiplier: '12'
+          enabled: 'true'
+        ncover:
+          path: '123'
+          exists: 'true'
+        clover:
+          path: '123'
+          exists: 'true'
+repositories: []
+# Remove line above if you want to set repository with YAML file as primary repository of plan
+triggers: []
+branches:
+  create: manually
+  delete: never
+  link-to-jira: true
+notifications: []
+labels: []
+dependencies:
+  require-all-stages-passing: false
+  enabled-for-branches: true
+  block-strategy: none
+  plans: []
+other:
+  concurrent-build-plugin:
+    number-of-concurrent-builds: system-default
+    execution-strategy: block-triggering

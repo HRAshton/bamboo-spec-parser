@@ -1,13 +1,13 @@
 // Browser adapter. Re-export core utilities; avoid Node-only APIs.
-export { add, getRandomId, greet } from "./internal";
+import { readYaml } from './read-yaml.ts';
+import {
+  type BambooSpec,
+  BambooSpecSchema,
+} from './validation-schemas/bamboo-spec.ts';
 
-export function getSecureRandomId(): string {
-  const timePart = Date.now().toString(36);
-  const array = new Uint8Array(12);
-  crypto.getRandomValues(array);
-  const rand = btoa(String.fromCharCode(...array))
-    .replaceAll("+", "-")
-    .replaceAll("/", "_")
-    .replaceAll("=", "");
-  return `${timePart}-${rand}`;
+export function parseAndValidateBambooSpecContent(
+  specString: string,
+): BambooSpec[] {
+  const readingResult = readYaml(specString);
+  return readingResult.map((doc) => BambooSpecSchema.parse(doc.toJS()));
 }
